@@ -32,7 +32,6 @@
       </xsl:copy>
     </xsl:template>
 
-
     <xsl:template match="marc:datafield[@tag='020']/marc:subfield/@code[.='a']">
       <xsl:choose>
         <xsl:when test="contains(../../marc:subfield[@code='q'], 'print') or contains(..,'print')">
@@ -50,7 +49,7 @@
         <xsl:when test="contains(../../marc:subfield[@code='q'], 'hard') or contains(..,'hard')">
           <xsl:attribute name="code">z</xsl:attribute>
         </xsl:when>
-        <xsl:when test="'9780472117826' or '9780472119448' or '9780472072538' or '0472072536' or '9780472052530' or '0472052535'">
+        <xsl:when test=".='9780472117826' or .='9780472119448' or .='9780472072538' or .='0472072536' or .='9780472052530' or .='0472052535'">
           <xsl:attribute name="code">z</xsl:attribute>
         </xsl:when>
         <xsl:otherwise>
@@ -58,7 +57,6 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:template>
-
 
     <xsl:template match="marc:datafield[@tag='020']/marc:subfield/@code[.='z']">
       <xsl:choose>
@@ -73,5 +71,6 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:template>
+
 
 </xsl:stylesheet>
