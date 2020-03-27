@@ -19,6 +19,12 @@
               <xsl:value-of select="marc:datafield[@tag='024']/marc:subfield[@code='a']"/>
             </xsl:element>
 <!--            <controlfield tag="001"><xsl:value-of select="marc:datafield[@tag='024']/marc:subfield[@code='a']"/></controlfield> -->
+            <xsl:if test="not(marc:controlfield/@tag='003')">
+              <xsl:element name="controlfield" namespace="http://www.loc.gov/MARC21/slim">
+                <xsl:attribute name="tag">003</xsl:attribute>
+                <xsl:text>MiU</xsl:text>
+              </xsl:element>
+            </xsl:if>
           </xsl:if>
           <xsl:apply-templates select="node()[not(name()='leader')]"/>
         </xsl:copy>
@@ -30,6 +36,12 @@
         <xsl:apply-templates select="@*"/>
         <xsl:value-of select="../marc:datafield[@tag='024']/marc:subfield[@code='a'][contains(., '10.3998')]"/>
       </xsl:copy>
+      <xsl:if test="not(../marc:controlfield/@tag='003')">
+        <xsl:element name="controlfield" namespace="http://www.loc.gov/MARC21/slim">
+          <xsl:attribute name="tag">003</xsl:attribute>
+          <xsl:text>MiU</xsl:text>
+        </xsl:element>
+      </xsl:if>
     </xsl:template>
 
     <xsl:template match="marc:datafield[@tag='020']/marc:subfield/@code[.='a']">
