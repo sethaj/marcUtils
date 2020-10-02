@@ -12,21 +12,7 @@
     <xsl:template match="marc:record">
         <xsl:copy>
           <xsl:apply-templates select="@*"/>
-          <xsl:apply-templates select="node()[name()='leader']"/>
-          <xsl:if test="not(marc:controlfield/@tag='001')">
-            <xsl:element name="controlfield" namespace="http://www.loc.gov/MARC21/slim">
-              <xsl:attribute name="tag">001</xsl:attribute>
-              <xsl:value-of select="marc:datafield[@tag='040']/marc:subfield[@code='a']"/><xsl:value-of select="marc:controlfield[@tag='005']"/>
-            </xsl:element>
-<!--            <controlfield tag="001"><xsl:value-of select="marc:datafield[@tag='024']/marc:subfield[@code='a']"/></controlfield> -->
-            <xsl:if test="not(marc:controlfield/@tag='003')">
-              <xsl:element name="controlfield" namespace="http://www.loc.gov/MARC21/slim">
-                <xsl:attribute name="tag">003</xsl:attribute>
-                <xsl:text>MiU</xsl:text>
-              </xsl:element>
-            </xsl:if>
-          </xsl:if>
-          <xsl:apply-templates select="node()[not(name()='leader')]"/>
+          <xsl:apply-templates select="node()"/>
         </xsl:copy>
     </xsl:template>
 
@@ -101,5 +87,32 @@
       </xsl:choose>
     </xsl:template>
 
+    <xsl:template match="marc:datafield[@tag='035']">
+      <xsl:element name="datafield" namespace="http://www.loc.gov/MARC21/slim">
+        <xsl:attribute name="tag">024</xsl:attribute>
+        <xsl:attribute name="ind1">7</xsl:attribute>
+        <xsl:attribute name="ind2"><xsl:text> </xsl:text></xsl:attribute>
+        <xsl:text>&#xa;</xsl:text>
+        <xsl:text>&#09;&#09;</xsl:text>
+        <xsl:element name="subfield" namespace="http://www.loc.gov/MARC21/slim">
+          <xsl:attribute name="code">a</xsl:attribute>
+            <xsl:value-of select="substring-after(../marc:datafield[@tag='856']/marc:subfield[@code='u'], 'handle.net/')"/>
+        </xsl:element>
+        <xsl:text>&#xa;</xsl:text>
+        <xsl:text>&#09;&#09;</xsl:text>
+        <xsl:element name="subfield" namespace="http://www.loc.gov/MARC21/slim">
+          <xsl:attribute name="code">2</xsl:attribute>
+          <xsl:text>hdl</xsl:text>
+        </xsl:element>
+        <xsl:text>&#xa;</xsl:text>
+        <xsl:text>&#09;</xsl:text>
+      </xsl:element>
+      <xsl:text>&#xa;</xsl:text>
+      <xsl:text>&#09;</xsl:text>
+      <xsl:copy>
+        <xsl:apply-templates select="@*"/>
+        <xsl:apply-templates select="node()"/>
+      </xsl:copy>
+    </xsl:template>
 
 </xsl:stylesheet>
